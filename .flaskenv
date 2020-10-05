@@ -1,0 +1,2 @@
+FLASK_APP=flaskRandomizer.py
+FLASK_ENV=development
