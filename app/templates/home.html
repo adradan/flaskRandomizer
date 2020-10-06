@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}This is You{% endblock %}
 {% block content %}
-    <p>TEST</p>
+    <div class="form-col">
+    <form action="" method="post" class="form">
+        <input type="text" id="artist-1" name="artist-1" class="artist-input" required><button type="button" class="btn-add-input">+</button>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+    </div>
+    </form>
+{% endblock %}
+{% block javascript %}
+<script src="{{ url_for('static', filename='home.js') }}"></script>
 {% endblock %}
