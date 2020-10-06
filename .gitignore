@@ -2,6 +2,7 @@
 .flaskenv
 node_modules/
 package-lock.json
+forms.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

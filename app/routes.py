@@ -1,10 +1,6 @@
 from app import app
 from config import Config
 from flask import render_template, request, session, url_for, redirect
-from app.forms import ArtistForm
-from wtforms import StringField
-from playlist_randomizer.playlist import Playlist
-import os
 import requests
 import spotipy
 from app import artist_validation
@@ -27,7 +23,8 @@ def index():
                 continue
             artist_list[field] = value.replace(' ', '+').strip()
             session['artist_list'] = artist_list
-        auth_url = f'{API_BASE}/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={REDIRECT_URI}&scope={SCOPE}&show_dialog={SHOW_DIALOG}'
+        auth_url = f'{API_BASE}/authorize?client_id={CLIENT_ID}&response_type=code\
+                    &redirect_uri={REDIRECT_URI}&scope={SCOPE}&show_dialog={SHOW_DIALOG}'
         return redirect(auth_url)
     return render_template('home.html')
 
@@ -72,4 +69,3 @@ def confirmation():
         'no_result': no_result
     }
     return render_template('confirmation.html', **context)
-
