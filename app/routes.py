@@ -8,6 +8,7 @@ import os
 import requests
 import spotipy
 from app import artist_validation
+import json
 
 API_BASE = 'https://accounts.spotify.com'
 REDIRECT_URI = 'http://127.0.0.1:5000/callback'
@@ -44,12 +45,16 @@ def callback():
     })
     res_body = res.json()
     session['token'] = res_body.get('access_token')
-    return redirect(url_for('confirmation'))
+    artist_list = json.dumps(session['artist_list'])
+    return redirect(url_for('confirmation', artist_list=artist_list, token=session['token']))
 
 
 @app.route('/confirmation', methods=['POST', 'GET'])
 def confirmation():
-    validated_data = artist_validation.validate_query(session['artist_list'], session['token'])
+    session.clear()
+    artist_list = json.loads(request.args['artist_list'])
+    token = request.args['token']
+    validated_data = artist_validation.validate_query(artist_list, token)
     no_match = {}
     correct = {}
     no_result = []
