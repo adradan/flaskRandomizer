@@ -9,7 +9,12 @@
     </form>
     </div>
     </form>
+    <button type="button" id="test-button">TEST</button>
 {% endblock %}
 {% block javascript %}
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from app import app
 from config import Config
-from flask import render_template, request, session, url_for, redirect
+from flask import render_template, request, session, url_for, redirect, make_response, jsonify
 import requests
 import spotipy
 from app import artist_validation
@@ -16,6 +16,15 @@ CLIENT_SECRET = Config().CLIENT_SECRET
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    client_flow_url = f'{API_BASE}/api/token'
+    resp = requests.post(client_flow_url, data={
+        'grant_type': 'client_credentials',
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET
+    })
+    token = resp.json().get('access_token')
+    session['client_token'] = token
+    print(session['client_token'])
     artist_list = {}
     if request.method == 'POST':
         for field, value in request.form.items():
@@ -23,8 +32,8 @@ def index():
                 continue
             artist_list[field] = value.replace(' ', '+').strip()
             session['artist_list'] = artist_list
-        auth_url = f'{API_BASE}/authorize?client_id={CLIENT_ID}&response_type=code\
-                    &redirect_uri={REDIRECT_URI}&scope={SCOPE}&show_dialog={SHOW_DIALOG}'
+        auth_url = f'{API_BASE}/authorize?client_id={CLIENT_ID}&response_type=code' + \
+                   f'&redirect_uri={REDIRECT_URI}&scope={SCOPE}&show_dialog={SHOW_DIALOG}'
         return redirect(auth_url)
     return render_template('home.html')
 
@@ -46,26 +55,23 @@ def callback():
     return redirect(url_for('confirmation', artist_list=artist_list, token=session['token']))
 
 
+@app.route('/ajax/search_artist', methods=['POST', 'GET'])
+def access_token():
+    artist = request.args.get('artist')
+    print(artist)
+    sp = spotipy.Spotify(auth=session['client_token'])
+    found_artists = sp.search(q=artist.strip(), type='artist', limit=5)
+    found_artists = found_artists['artists']['items']
+    # name path found_artists['artists']['items'][0]['name'])
+    return jsonify(artists=found_artists)
+
+
 @app.route('/confirmation', methods=['POST', 'GET'])
 def confirmation():
     session.clear()
     artist_list = json.loads(request.args['artist_list'])
     token = request.args['token']
-    validated_data = artist_validation.validate_query(artist_list, token)
     no_match = {}
     correct = {}
     no_result = []
-    for k, v in validated_data.items():
-        index_value = validated_data[k]
-        if len(index_value) == 3:
-            no_match[index_value[1]] = index_value[2]
-        elif len(index_value) == 2:
-            correct[index_value[0]] = index_value[1]
-        else:
-            no_result.append(index_value[0])
-    context = {
-        'no_match': no_match,
-        'correct': correct,
-        'no_result': no_result
-    }
-    return render_template('confirmation.html', **context)
+    return render_template('confirmation.html', artist_list=artist_list)

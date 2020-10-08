@@ -5,30 +5,14 @@
 {% endblock %}
 {% block content %}
     <h1>This is You.</h1>
-    <div class="correct-div">
-        <ul>
-        {% for name in correct %}
-            <li>{{ name }}</li>
+    <form action="" method="post" id="confirmation">
+    <div class="names">
+    <h3>Confirm your artists.</h3>
+        {% for name in artist_list.values() %}
+        <p>{{ name }}
+            <span><input type="checkbox" class="confirm-check"><input type="text" class="confirm-text" name="artist-{{ loop.index }}" id="artist-{{ loop.index }}"></span>
+        </p>
         {% endfor %}
-        </ul>
     </div>
-    <div class="no-match-div">
-        <h3 class="error no-match">These artists were corrected, confirm they are correct.</h3>
-        <ul>
-        {% for name in no_match %}
-            <li>{{ name }}&emsp;
-                <input type="checkbox" id="match-checkbox-{{ loop.index0 }}" class="match-check">
-                <input type="text" class="match-text" id="match-text-{{ loop.index0 }}">
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-    <div class="no-result-div">
-        <h3 class="error no-result">These artists were not found, please provide replacements.</h3>
-        <ul>
-        {% for name in no_result %}
-            <li>{{ name }}&emsp;<input type="text" id="correct-{{ loop.index0 }}" class="correct-input"/></li>
-        {% endfor %}
-        </ul>
-    </div>
+    </form>
 {% endblock %}

@@ -32,6 +32,7 @@ function addInput() {
 }
 
 function removeInput() {
+    console.log(document.cookie);
     const deletedIndex = Number(this.previousSibling.id.split('-')[1]);
     let remainingInput = form.getElementsByClassName('artist-input');
     this.previousSibling.remove();
@@ -55,6 +56,7 @@ function removeInput() {
 }
 
 function changeAttrCreate() {
+    console.log(document.cookie);
     let btn = document.getElementsByClassName('btn-add-input')[0];
     btn.textContent = '-';
     btn.setAttribute('class', 'btn-remove-input');
@@ -70,3 +72,14 @@ let buttonAdd = document.getElementsByClassName('btn-add-input')[0];
 
 let form = document.querySelector('.form');
 buttonAdd.addEventListener('click', changeAttrCreate);
+
+
+$('.artist-input').on('input', function () {
+    $.getJSON($SCRIPT_ROOT + '/ajax/search_artist', {
+        artist: $(this).val()
+    }, function(data) {
+        console.log(data);
+    })
+})
+
+
