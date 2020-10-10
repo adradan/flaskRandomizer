@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
+
 {% block title %}This is You{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/home.css') }}"{% endblock %}
+
 {% block content %}
     <div class="form-col">
     <form action="" method="post" class="form">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="text" id="artist-1" name="artist-1" class="artist-input" required><button type="button" class="btn-add-input">+</button>
+        <div id="artist-div-1">
+            <input type="text" id="artist-1" name="artist-1" class="artist-input" required><button type="button" class="btn-add-input">+</button>
+        </div>
+{#        <div class="search-results">#}
+{#            <div id="search-result"></div>#}
+{#        </div>#}
         <button type="submit" class="submit-btn">Submit</button>
     </form>
     </div>

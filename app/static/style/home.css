@@ -1,0 +1,13 @@
+#search-result {
+    display: none;
+    width: 150px;
+    border: 15px solid red;
+}
+
+#search-result p {
+    cursor: pointer;
+    height: 15px;
+}
+.empty {
+    cursor: default!important;
+}
