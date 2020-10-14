@@ -99,6 +99,13 @@ function findResults(elem, resultsList) {
 function checkClick() {
     let currentBox;
     let resultsList;
+    $(document).bind('keydown', function(e) {
+        let keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+            console.log(e.target);
+            $('body').click();
+        }
+    })
     $(document).on('input', '.artist-input', function(e) {
         // Creates a results menu under search box and finds results from spotify
         currentBox = e.target;

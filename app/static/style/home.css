@@ -1,6 +1,14 @@
 :root {
-    /*--input-width: 300px;*/
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
+    --bg-color: #171213;
+    --spotify-green: #65d36e;
+    /*--spotify-font: lineto-circular-pro-bold;*/
+    font-family: lineto-circular-pro-bold;
+}
+
+@font-face {
+    font-family: lineto-circular-pro-bold;
+    src: url('../fonts/lineto-circular-pro-bold.ttf');
 }
 
 .input-div {
