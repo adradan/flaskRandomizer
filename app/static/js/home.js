@@ -1,6 +1,7 @@
 function addInput() {
     let newInput = document.createElement('input');
     let newDiv = document.createElement('div');
+    let newHeader = document.createElement('h3');
     let inputArray = form.getElementsByClassName('artist-input');
     let lastIndex = inputArray.length - 1;
     let lastInput = inputArray[lastIndex];
@@ -13,18 +14,21 @@ function addInput() {
     newInput.setAttribute('autocomplete', 'off');
     newDiv.id = `artist-div-${latestIdNum + 1}`;
     newDiv.classList.add('input-div');
+    newHeader.textContent = `Artist ${latestIdNum + 1}`;
 
     let newBtn = document.createElement('button');
     newBtn.type = 'button';
     if (latestIdNum === 9) {
         let br = document.createElement('br');
         let div = form.appendChild(newDiv);
+        div.appendChild(newHeader);
         div.appendChild(newInput);
     } else {
         newBtn.textContent = '+';
         newBtn.classList.add('btn-add-input');
         newBtn.addEventListener('click', changeAttrCreate);
         let div = form.appendChild(newDiv);
+        div.appendChild(newHeader);
         div.appendChild(newInput);
         div.appendChild(newBtn);
     }
@@ -113,9 +117,12 @@ function checkClick() {
     $(document).on('click', 'li.result', function () {
         // Autofilling Input to selected artist from menu
         let text = this.textContent;
-        let inputDiv = this.parentElement.parentElement.parentElement;
-        let inputBox = inputDiv.getElementsByClassName('artist-input');
-        inputBox[0].value = text;
+        if (this.classList.contains('empty') !== true) {
+            // If there are any results, autofill; else, do nothing
+            let inputDiv = this.parentElement.parentElement.parentElement;
+            let inputBox = inputDiv.getElementsByClassName('artist-input');
+            inputBox[0].value = text;
+        }
     })
     $(document).click(function(e) {
         // Handle clicking away from menu

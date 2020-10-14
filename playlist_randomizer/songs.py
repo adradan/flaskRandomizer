@@ -8,8 +8,8 @@ class Songs:
     Adds Playlist ID to the DataFrame.
     If no playlist is found, finds the artists top ten songs instead.
     """
-    def __init__(self, artist_list=None):
-        self.artist_id = ArtistId(artist_list=artist_list)
+    def __init__(self, artist_list=None, token=None):
+        self.artist_id = ArtistId(artist_list=artist_list, token=token)
         self.df = self.artist_id.start()
         self.sp = self.artist_id.sp
 

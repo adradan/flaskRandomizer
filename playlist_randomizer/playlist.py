@@ -5,14 +5,15 @@ class Playlist:
     """
     Creates a Playlist named after the username and adds selected songs to it
     """
-    def __init__(self, artist_list):
+    def __init__(self, artist_list, token):
         self.playlist = None
-        self.song = Songs(artist_list=artist_list)
+        self.song = Songs(artist_list=artist_list, token=token)
         self.df = self.song.start_init_search()
         self.sp = self.song.sp
         self.user = self.sp.current_user()
         self.songs = []
         self.create_playlist()
+        self.resp = {'user_name': self.user['display_name']}
 
     def create_playlist(self):
         """ Creates the Playlist """

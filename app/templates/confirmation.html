@@ -4,15 +4,5 @@
     <script src="{{ url_for('static', filename='js/confirmation.js') }}"></script>
 {% endblock %}
 {% block content %}
-    <h1>This is You.</h1>
-    <form action="" method="post" id="confirmation">
-    <div class="names">
-    <h3>Confirm your artists.</h3>
-        {% for name in artist_list.values() %}
-        <p>{{ name }}
-            <span><input type="checkbox" class="confirm-check"><input type="text" class="confirm-text" name="artist-{{ loop.index }}" id="artist-{{ loop.index }}"></span>
-        </p>
-        {% endfor %}
-    </div>
-    </form>
+    <h1>This is {{ user_name }} has been created.</h1>
 {% endblock %}

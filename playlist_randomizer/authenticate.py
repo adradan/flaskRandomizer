@@ -5,8 +5,8 @@ import os
 from flask import url_for, request, session
 
 
-def auth():
-    sp = spotipy.Spotify(auth=session['token'])
+def auth(token):
+    sp = spotipy.Spotify(auth=token)
     return sp
 
 

@@ -1,6 +1,7 @@
 from app import app
 from config import Config
 from flask import render_template, request, session, url_for, redirect, make_response, jsonify
+from playlist_randomizer.playlist import Playlist
 import requests
 import spotipy
 from app import artist_validation
@@ -70,8 +71,7 @@ def access_token():
 def confirmation():
     session.clear()
     artist_list = json.loads(request.args['artist_list'])
+    print(request.args['artist_list'])
     token = request.args['token']
-    no_match = {}
-    correct = {}
-    no_result = []
-    return render_template('confirmation.html', artist_list=artist_list)
+    resp = Playlist(artist_list, token).resp
+    return render_template('confirmation.html', **resp)

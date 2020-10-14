@@ -7,8 +7,9 @@ class ArtistId:
     Asks for a number of artists and searches for them within Spotify
     Adds each Artist's Spotify ID and Name into a DataFrame and will throw errors if no matches are found.
     """
-    def __init__(self, artist_list=None):
+    def __init__(self, artist_list=None, token=None):
         self.artist_list = artist_list
+        self.token = token
         self.df = None
         self.data = {'Name': [],
                      'ID': []}
@@ -42,7 +43,7 @@ class ArtistId:
     def number_of_artists(self):
         """ Asks for how many artists they want """
         self.num_artists = len(self.artist_list)
-        self.sp = authenticate.auth()
+        self.sp = authenticate.auth(self.token)
         for key, value in self.artist_list.items():
             try:
                 search_result = self.search_id(value)
