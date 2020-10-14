@@ -1,7 +1,7 @@
 function addInput() {
     let newInput = document.createElement('input');
     let newDiv = document.createElement('div');
-    let newHeader = document.createElement('h3');
+    let newHeader = document.createElement('label');
     let inputArray = form.getElementsByClassName('artist-input');
     let lastIndex = inputArray.length - 1;
     let lastInput = inputArray[lastIndex];
@@ -15,6 +15,7 @@ function addInput() {
     newDiv.id = `artist-div-${latestIdNum + 1}`;
     newDiv.classList.add('input-div');
     newHeader.textContent = `Artist ${latestIdNum + 1}`;
+    newHeader.setAttribute('for', `artist-${latestIdNum + 1}`);
 
     let newBtn = document.createElement('button');
     newBtn.type = 'button';
@@ -48,8 +49,10 @@ function removeInput() {
             continue;
         } else if (prevIndex > deletedIndex) {
             remainingInput[i].id = `artist-${prevIndex - 1}`;
-            remainingInput[i].setAttribute('name', `artist-${prevIndex = 1}`);
+            remainingInput[i].setAttribute('name', `artist-${prevIndex - 1}`);
             remainingInput[i].parentElement.setAttribute('id', `artist-div-${prevIndex - 1}`);
+            remainingInput[i].parentElement.getElementsByTagName('label')[0].textContent = `Artist ${prevIndex - 1}`;
+            remainingInput[i].parentElement.getElementsByTagName('label')[0].setAttribute('for', `artist-${prevIndex - 1}`);
         }
     }
     this.remove();
@@ -96,16 +99,9 @@ function findResults(elem, resultsList) {
     }
 }
 
-function checkClick() {
+function main() {
     let currentBox;
     let resultsList;
-    $(document).bind('keydown', function(e) {
-        let keyCode = e.keyCode || e.which;
-        if (keyCode == 9) {
-            console.log(e.target);
-            $('body').click();
-        }
-    })
     $(document).on('input', '.artist-input', function(e) {
         // Creates a results menu under search box and finds results from spotify
         currentBox = e.target;
@@ -124,55 +120,55 @@ function checkClick() {
     $(document).on('click', 'li.result', function () {
         // Autofilling Input to selected artist from menu
         let text = this.textContent;
+        console.log('asd11');
         if (this.classList.contains('empty') !== true) {
             // If there are any results, autofill; else, do nothing
             let inputDiv = this.parentElement.parentElement.parentElement;
             let inputBox = inputDiv.getElementsByClassName('artist-input');
             inputBox[0].value = text;
+            console.log('asdf');
         }
-    })
-    $(document).click(function(e) {
-        // Handle clicking away from menu
-        let prevParent;
-        let prevResults;
-        let resultsDiv;
-        let currentElem = e.target;
-        let currentElemParent = currentElem.parentElement;
-        if (prevTarget === null) {
-            // NO PREVTARGET, SHOW MENU
-            prevTarget = currentElem;
-        } else if (currentElem.classList.contains('artist-input')) {
-            // CLICKED AN INPUT BOX, SHOW ITS MENU
-            resultsDiv = currentElemParent.getElementsByClassName('search-results');
-            if (resultsDiv.length) {
-                // IF THEY HAVE SEARCHED, SHOW MENU
-                resultsDiv[0].style.visibility = 'visible';
-            }
-            if (prevTarget.id === currentElem.id) {
-                // CLICKED ON THE SAME BOX, KEEP SHOWING MENU
-                // LEFT FOR REFERENCE
-            } else if (prevTarget.id !== currentElem.id && prevTarget.nodeName === currentElem.nodeName) {
-                // CLICKED ON A DIFFERENT BOX
-                prevParent = prevTarget.parentElement;
-                prevResults = prevParent.getElementsByClassName('search-results');
-                if (prevResults.length) {
-                    prevResults[0].style.visibility = 'hidden';
-                }
-            }
+    });
+    $(document).on('click focus focusout', '.artist-input', function(e) {
+        let input = $(this);
+        let parentDiv = input.parent();
+        let searchResults = parentDiv.find('.search-results');
+        showResults = function () {
+            hideResults();
+            showing = parentDiv;
+            searchResults.show();
+            searchResults = parentDiv.find('.search-results');
+        };
+        hideResults = function () {
+            searchResults.hide();
+            searchResults = parentDiv.find('.search-results');
+        };
+        if (e.type == 'focusout') {
+            // hideResults();
         } else {
-            // CLICKING ON IRRELEVANT ELEMENTS
-            prevParent = prevTarget.parentElement;
-            if (prevParent !== null) {
-                prevResults = prevParent.getElementsByClassName('search-results');
-                if (prevResults.length) {
-                    prevResults[0].style.visibility = 'hidden';
-                }
+            showResults();
+        }
+    });
+    $(document).on('click', function(e) {
+        if(showing) {
+            let parent = showing[0];
+            console.log(parent);
+            console.log(e.target)
+            if (e.target.classList.contains('result')) {
+                showResults();
+                hideResults();
+                console.log('hidden');
+            }
+            if (!$.contains(parent, e.target) || !parent == e.target) {
+                hideResults();
             }
         }
-        prevTarget = currentElem;
-    })
+    });
 }
 
+let showResults;
+let hideResults;
+let showing;
 let prevTarget = null;
 
-$(document).ready(checkClick)
+$(document).ready(main)
