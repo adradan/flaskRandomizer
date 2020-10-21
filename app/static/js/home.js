@@ -1,7 +1,8 @@
-function addInput() {
+function addInput(btn) {
     let newInput = document.createElement('input');
     let newDiv = document.createElement('div');
     let newHeader = document.createElement('label');
+    let form = btn.parentElement.parentElement;
     let inputArray = form.getElementsByClassName('artist-input');
     let lastIndex = inputArray.length - 1;
     let lastInput = inputArray[lastIndex];
@@ -14,20 +15,25 @@ function addInput() {
     newInput.setAttribute('autocomplete', 'off');
     newDiv.id = `artist-div-${latestIdNum + 1}`;
     newDiv.classList.add('input-div');
-    newHeader.textContent = `Artist ${latestIdNum + 1}`;
+    newHeader.textContent = `${latestIdNum + 1}.`;
     newHeader.setAttribute('for', `artist-${latestIdNum + 1}`);
-
+    newHeader.classList.add('artist-label');
     let newBtn = document.createElement('button');
     newBtn.type = 'button';
+    newBtn.textContent = '+';
+    newBtn.classList.add('btn-add-input');
+    newBtn.classList.add('btn');
+    newBtn.classList.add('form-btn');
+    newBtn.addEventListener('click', changeAttrCreate);
     if (latestIdNum === 9) {
         let br = document.createElement('br');
         let div = form.appendChild(newDiv);
+        newBtn.style.visibility = 'hidden';
+        newInput.classList.add('artist-last');
         div.appendChild(newHeader);
         div.appendChild(newInput);
+        div.appendChild(newBtn);
     } else {
-        newBtn.textContent = '+';
-        newBtn.classList.add('btn-add-input');
-        newBtn.addEventListener('click', changeAttrCreate);
         let div = form.appendChild(newDiv);
         div.appendChild(newHeader);
         div.appendChild(newInput);
@@ -51,9 +57,13 @@ function removeInput() {
             remainingInput[i].id = `artist-${prevIndex - 1}`;
             remainingInput[i].setAttribute('name', `artist-${prevIndex - 1}`);
             remainingInput[i].parentElement.setAttribute('id', `artist-div-${prevIndex - 1}`);
-            remainingInput[i].parentElement.getElementsByTagName('label')[0].textContent = `Artist ${prevIndex - 1}`;
+            remainingInput[i].parentElement.getElementsByTagName('label')[0].textContent = `${prevIndex - 1}.`;
             remainingInput[i].parentElement.getElementsByTagName('label')[0].setAttribute('for', `artist-${prevIndex - 1}`);
-        }
+            let button = remainingInput[i].parentElement.getElementsByClassName('btn-add-input')[0];
+            if (button) {
+                button.style.visibility = 'visible';
+            }
+         }
     }
     this.remove();
 }
@@ -62,7 +72,9 @@ function changeAttrCreate() {
     let btn = document.getElementsByClassName('btn-add-input')[0];
     btn.textContent = '-';
     btn.setAttribute('class', 'btn-remove-input');
-    addInput();
+    btn.classList.add('btn');
+    btn.classList.add('form-btn');
+    addInput(btn);
     btn.removeEventListener('click', changeAttrCreate);
     let buttonsRemove = document.getElementsByClassName('btn-remove-input');
     for (let i = 0; i < buttonsRemove.length; i++) {
@@ -99,6 +111,47 @@ function findResults(elem, resultsList) {
     }
 }
 
+function showResults({prevTarget, elem} = {}) {
+    if (elem) {
+        let results = $(elem).siblings('.search-results').first();
+        if (results) {
+            $(results).show();
+        }
+    }
+}
+
+function hideResults({prevTarget, elem} = {}) {
+    // Hide results
+    let results;
+    if (prevTarget) {
+        results = $(prevTarget).siblings('.search-results').first();
+        if (results) {
+            $(results).hide();
+            results = null;
+        }
+    }
+    if (elem) {
+        results = $(elem).siblings('.search-results').first();
+        if (results) {
+            $(results).hide();
+            results = null;
+        }
+    }
+}
+
+function autofillResult(elem) {
+    // Autofill Result
+    elem = elem[0];
+    let text = elem.textContent;
+    if (elem.classList.contains('empty') !== true) {
+        // If there are any results, autofill; else, do nothing
+        let inputDiv = elem.parentElement.parentElement.parentElement;
+        let inputBox = inputDiv.getElementsByClassName('artist-input');
+        inputBox[0].value = text;
+        hideResults({elem: inputBox});
+    }
+}
+
 function main() {
     let currentBox;
     let resultsList;
@@ -117,58 +170,47 @@ function main() {
         }
         findResults(currentBox, resultsList);
     });
-    $(document).on('click', 'li.result', function () {
-        // Autofilling Input to selected artist from menu
-        let text = this.textContent;
-        console.log('asd11');
-        if (this.classList.contains('empty') !== true) {
-            // If there are any results, autofill; else, do nothing
-            let inputDiv = this.parentElement.parentElement.parentElement;
-            let inputBox = inputDiv.getElementsByClassName('artist-input');
-            inputBox[0].value = text;
-            console.log('asdf');
-        }
-    });
-    $(document).on('click focus focusout', '.artist-input', function(e) {
-        let input = $(this);
-        let parentDiv = input.parent();
-        let searchResults = parentDiv.find('.search-results');
-        showResults = function () {
-            hideResults();
-            showing = parentDiv;
-            searchResults.show();
-            searchResults = parentDiv.find('.search-results');
-        };
-        hideResults = function () {
-            searchResults.hide();
-            searchResults = parentDiv.find('.search-results');
-        };
-        if (e.type == 'focusout') {
-            // hideResults();
-        } else {
-            showResults();
-        }
-    });
-    $(document).on('click', function(e) {
-        if(showing) {
-            let parent = showing[0];
-            console.log(parent);
-            console.log(e.target)
-            if (e.target.classList.contains('result')) {
-                showResults();
-                hideResults();
-                console.log('hidden');
-            }
-            if (!$.contains(parent, e.target) || !parent == e.target) {
-                hideResults();
+    let prevTarget;
+    $(document).on('click focus keyup', function(e) {
+        let target = $(e.target);
+        let searchResults = $(target).siblings('.search-results');
+        // Tab out
+        if (e.type == 'keyup') {
+            if (e.which == 9) {
+                if ($(target).hasClass('artist-input')) {
+                    showResults({elem: target});
+                } else {
+                    hideResults({prevTarget: prevTarget});
+                }
             }
         }
+        // Clicking on input box
+        if ($(target).hasClass('artist-input')) {
+            // Checking if coming from other input box
+            if ($(prevTarget).hasClass('artist-input')) {
+                hideResults({prevTarget: prevTarget});
+            }
+            // Always show results
+            showResults({elem: target});
+        }
+        // Checking if clicking on result
+        if ($(target).hasClass('result')) {
+            autofillResult(target);
+        }
+        // Checking if clicking on irrelevant elements
+        if ($(target).hasClass('artist-input') !== true && $(target).hasClass('result') !== true) {
+            hideResults({prevTarget: prevTarget});
+        }
+        prevTarget = target;
     });
 }
 
-let showResults;
-let hideResults;
 let showing;
 let prevTarget = null;
+
+// let stylesheet = document.getElementsByTagName('link')[0];
+// let href = stylesheet.getAttribute('href');
+// href = `${href}?v=${Math.floor(Math.random()*100)}`;
+// stylesheet.setAttribute('href', href);
 
 $(document).ready(main)

@@ -7,16 +7,26 @@
     <div class="header">
         <h1>This is You.</h1>
     </div>
-    <div class="form-col">
+    <div class="form">
         <form action="" method="post" class="form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div id="artist-div-1" class="input-div">
-                <label for="artist-1">Artist 1</label>
-                <input type="text" id="artist-1" name="artist-1" class="artist-input" autocomplete="off" required><button type="button" class="btn-add-input">+</button>
+                <label class="artist-label" for="artist-1">1.</label><!--
+                --><input type="text" id="artist-1" name="artist-1" class="artist-input" autocomplete="off" required><button type="button" class="btn btn-add-input form-btn">+</button>
             </div>
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit" class="submit-btn">Create</button>
         </form>
     </div>
+{% endblock %}
+{% block footer %}
+<div class="logos">
+    <a href="https://spotify.com/" target="_blank"><img src="{{ url_for('static', filename='img/spotify-icon-rgb-green.png') }}" class="spotify-logo logo"></a><!--
+    --><p class="vertical"></p><!--
+    --><a href="https://github.com/adradan/flaskRandomizer" target="_blank"><img src="{{ url_for('static', filename='img/GitHub-Mark-Light-64px.png') }}" class="github-logo logo"></a>
+{#    <img src="{{ url_for('static', filename='img/spotify-icon-rgb-green.png') }}" class="spotify-logo">#}
+{#    <p class="vertical">X</p>#}
+{#    <img src="{{ url_for('static', filename='img/GitHub-Mark-Light-64px.png') }}" class="github-logo">#}
+</div>
 {% endblock %}
 {% block javascript %}
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>

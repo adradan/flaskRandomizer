@@ -1,74 +1,199 @@
 :root {
     /*box-sizing: border-box;*/
-    --bg-color: #171213;
-    --spotify-green: #65d36e;
+    --bg-color: #191414;
+    --spotify-green: #1db954;
+    --input-border: #979797;
+    --spotify-gray: #D8D8D8;
     /*--spotify-font: lineto-circular-pro-bold;*/
-    font-family: lineto-circular-pro-bold;
+    font-family: proxima-nova-alt-semibold;
+    font-weight: bold;
+    color: #1DB954;
 }
 
 @font-face {
-    font-family: lineto-circular-pro-bold;
-    src: url('../fonts/lineto-circular-pro-bold.ttf');
+    font-family: proxima-nova-alt-regular;
+    src: url('../fonts/proxima-nova-alt-regular.woff');
 }
 
-div.header>h1 {
+@font-face {
+    font-family: proxima-nova-alt-semibold;
+    src: url('../fonts/proxima-nova-alt-semibold.ttf');
+}
+
+.header {
+    margin-top: 30px;
+}
+
+body {
+    background-color: var(--bg-color);
+    height: 100%;
+    min-height: 100%;
+}
+
+.header {
     margin: auto;
+    width: 100%;
     text-align: center;
 }
 
-.input-div {
-    width: 500px;
+/* FORM CSS*/
+.form {
     margin: auto;
+    width: 100%;
     text-align: center;
 }
 
 .artist-input {
-    /*box-sizing: border-box;*/
-    width: 80%;
-    border-radius: 20px 0px 0px 20px;
-    height: 20px;
+    width: 20%;
+    background-color: var(--spotify-gray);
+    border: 1px solid var(--input-border);
+    height: 26px;
 }
 
-ul.results-list {
-    cursor: pointer;
-    list-style-type: none;
-    margin: 0;
-    padding: 0px;
-    /*border-top: 5px solid transparent;*/
-    /*border-bottom: 5px solid transparent;*/
-    /*background-color: gray;*/
-    width: 80%;
-    left: 70px;
-    right: 0;
-    border-radius: 20px 0px 0px 20px;
-    /*position: relative;*/
-    /*height: 15px;*/
+.artist-input:focus {
+    outline-width: 0;
 }
 
-li.result {
-    background-color: gray;
-    padding: 3px;
-    border: 1px solid black;
-    margin-top: -1px;
-}
-
-.empty {
-    cursor: default!important;
+.form-btn {
+    display: inline-block;
+    border: 1px solid var(--input-border);
+    /*height: 28px;*/
+    padding: 8px 20px 6px 12px;
+    margin-left: -1px;
+    margin-bottom: 1px;
+    font-family: proxima-nova-alt-semibold;
 }
 
 .btn-add-input {
-    font-family: lineto-circular-pro-bold!important;
-    border-radius: 0px 20px 20px 0px;
-    height: 25px;
-    padding-top: 1px;
+    background-color: var(--spotify-green);
 }
 
-    /*button.btn-add-input {*/
-    /*    */
-    /*}*/
+.btn-remove-input {
+    background-color: #C53F31;
+    color: white;
+}
 
 .submit-btn {
-    margin: 20px auto auto auto;
-    text-align: center;
-    display: block;
+    display: inline-block;
+    border: 1px solid var(--input-border);
+    height: 29px;
+    background-color: var(--spotify-green);
+    font-family: proxima-nova-alt-semibold;
+}
+
+label {
+    /*padding-right: 10px;*/
+    display: inline-block;
+    width: 20px;
+    margin-right: 18px;
+}
+
+button.btn-add-input {
+    display: inline-block;
+    width: 8px;
+}
+
+button.btn-remove-input {
+    display: inline-block;
+    width: 8px;
+}
+
+.input-div {
+    margin-bottom: 10px;
+}
+
+/* LOGO CSS */
+.logos {
+    align-items: center ;
+}
+
+.logo {
+    height: 36px;
+    width: 36px;
+    display: inline-block;
+}
+
+.github-logo {
+    height: 36px;
+    width: 36px;
+}
+
+.spotify-logo {
+    height: 36px;
+    width: 36px;
+}
+
+.vertical {
+    border: 1px solid #979797;
+    height: 36px;
+    width: 0px;
+    display: inline-block;
+    transform: translateY(17px);
+    margin-right: 18px;
+    margin-left: 18px;
+    /*transform: translateY(10px);*/
+    /*!*width: 100%;*!*/
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    /*left: 50%;*/
+    /*margin: auto auto 20px auto;*/
+    /*display: block;*/
+}
+
+.logos {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: auto auto 15px 46.3%;
+    width: 100%;
+    height: 36px;
+    /*display: inline-block!important;*/
+}
+
+/*.logo-span {*/
+/*    transform: translateY(10px);*/
+/*    margin-left: 46%;*/
+/*    padding-bottom: 1px!important;*/
+/*}*/
+
+/*.spotify-logo {*/
+/*    height: 36px;*/
+/*    width: 36px;*/
+/*    !*display: inline-block;*!*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*    display: block;*/
+/*}*/
+
+/*.github-logo {*/
+/*    height: 36px;*/
+/*    width: 36px;*/
+/*    !*display: inline-block;*!*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*    display: block;*/
+/*}*/
+
+/* RESULTS CSS */
+ul.results-list {
+    left: 40%;
+    width: 20.4%;
+    background-color: var(--bg-color);
+    padding-left: 0px;
+    margin-top: 0px;
+    font-family: proxima-nova-alt-regular!important;
+}
+
+li.result {
+    list-style-type: none;
+    cursor: pointer;
+    border: 2px solid var(--spotify-green);
+    margin-top: -2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+li.empty {
+    cursor: default!important;
+    font-style: italic;
 }
