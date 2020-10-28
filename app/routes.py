@@ -25,7 +25,6 @@ def index():
     })
     token = resp.json().get('access_token')
     session['client_token'] = token
-    print(session['client_token'])
     artist_list = {}
     if request.method == 'POST':
         for field, value in request.form.items():
@@ -53,13 +52,12 @@ def callback():
     res_body = res.json()
     session['token'] = res_body.get('access_token')
     artist_list = json.dumps(session['artist_list'])
-    return redirect(url_for('confirmation', artist_list=artist_list, token=session['token']))
+    return redirect(url_for('create_playlist', artist_list=artist_list, token=session['token']))
 
 
 @app.route('/ajax/search_artist', methods=['POST', 'GET'])
 def access_token():
     artist = request.args.get('artist')
-    print(artist)
     sp = spotipy.Spotify(auth=session['client_token'])
     found_artists = sp.search(q=artist.strip(), type='artist', limit=5)
     found_artists = found_artists['artists']['items']
@@ -67,11 +65,18 @@ def access_token():
     return jsonify(artists=found_artists)
 
 
-@app.route('/confirmation', methods=['POST', 'GET'])
-def confirmation():
+@app.route('/create', methods=['POST', 'GET'])
+def create_playlist():
     session.clear()
     artist_list = json.loads(request.args['artist_list'])
     print(request.args['artist_list'])
     token = request.args['token']
     resp = Playlist(artist_list, token).resp
-    return render_template('confirmation.html', **resp)
+    return redirect(url_for('confirmation', **resp))
+
+
+@app.route('/confirmation', methods=['GET'])
+def confirmation():
+    user_name = request.args.get('user_name')
+    url = request.args.get('url')
+    return render_template('confirmation.html', user_name=user_name, url=url)

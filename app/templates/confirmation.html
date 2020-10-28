@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Confirmation{% endblock %}
-{% block javascript %}
-    <script src="{{ url_for('static', filename='js/confirmation.js') }}"></script>
-{% endblock %}
+{% block title %}This is {{ user_name }}{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/home.css') }}">{% endblock %}
 {% block content %}
-    <h1>This is {{ user_name }} has been created.</h1>
+    <div class="header header-confirmation">
+        <h1>This is {{ user_name }}.</h1>
+    </div>
+    <div class="iframe">
+        <iframe src="{{ url }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
 {% endblock %}

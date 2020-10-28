@@ -11,6 +11,10 @@
 {% block javascript %}{% endblock %}
 </body>
 <footer>
-    {% block footer %}{% endblock %}
+    <div class="logos">
+    <a href="https://spotify.com/" target="_blank"><img src="{{ url_for('static', filename='img/spotify-icon-rgb-green.png') }}" class="spotify-logo logo"></a><!--
+    --><p class="vertical"></p><!--
+    --><a href="https://github.com/adradan/flaskRandomizer" target="_blank"><img src="{{ url_for('static', filename='img/GitHub-Mark-Light-64px.png') }}" class="github-logo logo"></a>
+</div>
 </footer>
 </html>

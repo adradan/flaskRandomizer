@@ -1,4 +1,11 @@
+import re
 from .songs import Songs
+
+
+def get_url(url):
+    pattern = re.compile(r'playlist')
+    url = pattern.sub('embed/playlist', url)
+    return url
 
 
 class Playlist:
@@ -7,13 +14,14 @@ class Playlist:
     """
     def __init__(self, artist_list, token):
         self.playlist = None
+        self.playlist_url = None
         self.song = Songs(artist_list=artist_list, token=token)
         self.df = self.song.start_init_search()
         self.sp = self.song.sp
         self.user = self.sp.current_user()
         self.songs = []
         self.create_playlist()
-        self.resp = {'user_name': self.user['display_name']}
+        self.resp = {'user_name': self.user['display_name'], 'url': self.playlist_url}
 
     def create_playlist(self):
         """ Creates the Playlist """
@@ -27,6 +35,7 @@ class Playlist:
                    'description': description}
         self.grab_ids()
         self.playlist = self.sp.user_playlist_create(**context)
+        self.playlist_url = get_url(self.playlist['external_urls']['spotify'])
         self.add_songs(user_id)
         print(f'\'This is {user_name}\' has been successfully created.')
 

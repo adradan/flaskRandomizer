@@ -36,6 +36,11 @@ body {
     text-align: center;
 }
 
+.header-confirmation {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
 /* FORM CSS*/
 .form {
     margin: auto;
@@ -196,4 +201,14 @@ li.result {
 li.empty {
     cursor: default!important;
     font-style: italic;
+}
+
+/* iFrame CSS */
+iframe {
+    margin: 0 auto;
+    padding: 0;
+    border: none;
+    width: 1000px;
+    height: 700px;
+    display: block;
 }
