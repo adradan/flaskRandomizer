@@ -37,7 +37,6 @@ class Playlist:
         self.playlist = self.sp.user_playlist_create(**context)
         self.playlist_url = get_url(self.playlist['external_urls']['spotify'])
         self.add_songs(user_id)
-        print(f'\'This is {user_name}\' has been successfully created.')
 
     def grab_ids(self):
         """ Grabs the song IDs from DF """

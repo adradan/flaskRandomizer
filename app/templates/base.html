@@ -6,6 +6,7 @@
     {% block stylesheet %}{% endblock %}
 </head>
 <body>
+<a href="{{ url_for('index') }}" class="home-btn">Home</a>
 {% block content %}{% endblock %}
 {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
 {% block javascript %}{% endblock %}

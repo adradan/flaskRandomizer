@@ -1,11 +1,12 @@
-from app import app
-from config import Config
-from flask import render_template, request, session, url_for, redirect, make_response, jsonify
-from playlist_randomizer.playlist import Playlist
+import json
+
 import requests
 import spotipy
-from app import artist_validation
-import json
+from flask import render_template, request, session, url_for, redirect, jsonify
+
+from app import app
+from config import Config
+from playlist_randomizer.playlist import Playlist
 
 API_BASE = 'https://accounts.spotify.com'
 REDIRECT_URI = 'http://127.0.0.1:5000/callback'
@@ -69,7 +70,6 @@ def access_token():
 def create_playlist():
     session.clear()
     artist_list = json.loads(request.args['artist_list'])
-    print(request.args['artist_list'])
     token = request.args['token']
     resp = Playlist(artist_list, token).resp
     return redirect(url_for('confirmation', **resp))
