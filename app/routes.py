@@ -9,7 +9,7 @@ from config import Config
 from playlist_randomizer.playlist import Playlist
 
 API_BASE = 'https://accounts.spotify.com'
-REDIRECT_URI = 'http://127.0.0.1:5000/callback'
+REDIRECT_URI = 'https://this-is-you.herokuapp.com/callback'
 SCOPE = 'playlist-modify-private%20playlist-read-private%20user-library-read%20playlist-modify-public'
 SHOW_DIALOG = True
 CLIENT_ID = Config().CLIENT_ID
